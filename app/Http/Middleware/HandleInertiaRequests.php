@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Folder;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,11 +30,15 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+        $folders = $user ? Folder::with('collections')->where('user_id', $user->id)->select(['id', 'name', 'slug'])->get() : null;
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
             ],
+
+            'folders' => $folders
         ];
     }
 }
