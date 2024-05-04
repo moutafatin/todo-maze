@@ -1,12 +1,22 @@
-import {Sheet, SheetContent, SheetHeader, SheetTrigger} from "@/Components/ui/sheet";
+import {Sheet, SheetContent, SheetTrigger} from "@/Components/ui/sheet";
 import {PropsWithChildren, useEffect, useState} from "react";
 import {cn} from "@/lib/utils";
-import {ChevronsUpDown, FolderIcon, ListIcon, MenuIcon} from 'lucide-react'
+import {ChevronsUpDown, FolderIcon, ListIcon, MenuIcon, PlusIcon} from 'lucide-react'
 import {usePage} from "@inertiajs/react";
 import {PageProps} from "@/types";
 import {Avatar, AvatarImage} from "@/Components/ui/avatar";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/Components/ui/collapsible";
 import {Button} from "@/Components/ui/button";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/Components/ui/dialog";
+import {Input} from "@/Components/ui/input";
 
 export function SidebarLayout({children}: PropsWithChildren) {
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768)
@@ -26,14 +36,14 @@ export function SidebarLayout({children}: PropsWithChildren) {
                     <MenuIcon/>
                 </SheetTrigger>
                 <SheetContent side='left'
-                              className={cn('w-80', isDesktop && 'data-[state=open]:slide-in-from-right-0 focus:outline-none')}
+                              className={cn('w-80 flex flex-col', isDesktop && 'data-[state=open]:slide-in-from-right-0 focus:outline-none')}
                               onInteractOutside={(e) => {
                                   if (isDesktop) {
                                       e.preventDefault()
                                       return
                                   }
                               }}>
-                    <SheetHeader>
+                    <div>
                         <div className='flex items-center gap-x-2 mb-16'>
                             <Avatar className='size-12'>
                                 <AvatarImage src={auth.user.avatar_url}/>
@@ -56,18 +66,80 @@ export function SidebarLayout({children}: PropsWithChildren) {
                                         </CollapsibleTrigger>
                                     </div>
                                     <CollapsibleContent className='CollapsibleContent'>
-                                        <ul className='ml-4 p-2 space-y-2'>
+                                        <ul className='ml-4 p-2 space-y-1'>
                                             {folder.collections.map(collection => <li
                                                 className='flex items-center gap-x-2' key={collection.id}>
-                                                <ListIcon/>
-                                                <span>{collection.name}</span>
+                                                <Button variant='ghost' className='w-full justify-start gap-x-2 h-8'>
+                                                    <ListIcon/>
+                                                    <span>{collection.name}</span>
+                                                </Button>
                                             </li>)}
+                                            <li>
+
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <Button variant='ghost'
+                                                                className='w-full justify-start gap-x-2 h-8'>
+                                                            <PlusIcon/>
+                                                            New collection
+                                                        </Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent>
+                                                        <DialogHeader>
+                                                            <DialogTitle>Create new collection
+                                                                inside {folder.name}</DialogTitle>
+
+                                                        </DialogHeader>
+                                                        <form className='flex flex-col gap-y-2'
+                                                              id={`create-collection-${folder.slug}`}>
+                                                            <Input placeholder='Web Project'/>
+                                                        </form>
+                                                        <DialogFooter>
+                                                            <DialogClose asChild>
+
+                                                                <Button variant='outline'>Cancel</Button>
+                                                            </DialogClose>
+                                                            <Button
+                                                                form={`create-collection-${folder.slug}`}>Create</Button>
+                                                        </DialogFooter>
+                                                    </DialogContent>
+                                                </Dialog>
+                                            </li>
                                         </ul>
                                     </CollapsibleContent>
                                 </Collapsible>
                             </li>)}
                         </ul>
-                    </SheetHeader>
+                    </div>
+                    <div className='mt-auto'>
+                        <Dialog>
+                            <DialogTrigger asChild>
+
+                                <Button className='gap-x-3 font-semibold w-full'>
+                                    <PlusIcon/>
+                                    New folder
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Create new folder</DialogTitle>
+
+                                </DialogHeader>
+                                <form className='flex flex-col gap-y-2' id='create-folder'>
+                                    <Input placeholder='Programming'/>
+                                </form>
+                                <DialogFooter>
+
+                                    <DialogClose asChild>
+
+                                        <Button variant='outline'>Cancel</Button>
+                                    </DialogClose>
+                                    <Button form='create-folder'>Create</Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+
+                    </div>
                 </SheetContent>
             </Sheet>
             <main className='md:ml-80'>
