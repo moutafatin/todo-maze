@@ -3,8 +3,8 @@ import {Button} from "@/Components/ui/button";
 import {ChevronRight} from "lucide-react";
 import {CreateCollection} from "@/features/collections/CreateCollection";
 import {Folder} from "@/types";
-import {CollectionItem} from "@/features/collections/CollectionItem";
 import {FolderOptions} from "@/features/folders/FolderOptions";
+import {CollectionItem} from "@/features/collections/CollectionItem";
 
 
 type FolderItemProps = {

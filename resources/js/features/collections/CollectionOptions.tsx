@@ -1,7 +1,7 @@
-import {Folder} from "@/types";
+import {Collection} from "@/types";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/Components/ui/dropdown-menu";
 import {Button} from "@/Components/ui/button";
-import {Edit2Icon, FolderIcon, Trash2Icon} from "lucide-react";
+import {Edit2Icon, EllipsisVertical, Trash2Icon} from "lucide-react";
 import {Link, useForm} from "@inertiajs/react";
 import {
     Dialog,
@@ -16,26 +16,26 @@ import {Input} from "@/Components/ui/input";
 import {useState} from "react";
 
 
-type FolderOptionsProps = {
-    folder: Folder
+type CollectionOptionsProps = {
+    collection: Collection
 }
 
-export function FolderOptions({folder}: FolderOptionsProps) {
+export function CollectionOptions({collection}: CollectionOptionsProps) {
+
     const [open, setOpen] = useState(false)
     const {data, setData, patch, processing, errors, reset} = useForm({
-        name: folder.name
+        name: collection.name
     })
     return <Dialog open={open} onOpenChange={setOpen}>
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant='ghost' className='gap-x-2 w-full justify-start'>
-                    <FolderIcon/>
-                    <span>{folder.name}</span>
+                <Button variant='ghost' className='px-1'>
+                    <EllipsisVertical className='text-gray-500'/>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-48'>
                 <DropdownMenuItem className='gap-x-2 ' asChild>
-                    <Link href={route('folders.destroy', {folder: folder.id})}
+                    <Link href={route('collections.destroy', {folder: collection.folder_id, collection: collection.id})}
                           method='delete' as='button' className='w-full cursor-pointer'>
                         <Trash2Icon className='size-4'/>
                         Delete
@@ -49,14 +49,14 @@ export function FolderOptions({folder}: FolderOptionsProps) {
                 </DialogTrigger>
             </DropdownMenuContent>
         </DropdownMenu>
-        {/*   Dialog for edit folder */}
+        {/*   Dialog for edit collection */}
         <DialogContent>
             <DialogHeader>
                 <DialogTitle>Update folder</DialogTitle>
             </DialogHeader>
-            <form className='flex flex-col gap-y-2' id={`update-folder-${folder.id}`} onSubmit={e => {
+            <form className='flex flex-col gap-y-2' id={`update-collection-${collection.id}`} onSubmit={e => {
                 e.preventDefault()
-                patch(route('folders.update', {folder: folder.id}), {
+                patch(route('collections.update', {folder: collection.folder_id, collection: collection.id}), {
                     onSuccess: () => {
                         reset('name')
                         setOpen(false)
@@ -72,7 +72,7 @@ export function FolderOptions({folder}: FolderOptionsProps) {
                 <DialogClose asChild>
                     <Button variant='outline'>Cancel</Button>
                 </DialogClose>
-                <Button form={`update-folder-${folder.id}`} disabled={processing}>Update</Button>
+                <Button form={`update-collection-${collection.id}`} disabled={processing}>Update</Button>
             </DialogFooter>
         </DialogContent>
     </Dialog>

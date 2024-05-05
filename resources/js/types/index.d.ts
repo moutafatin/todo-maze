@@ -17,7 +17,8 @@ export interface Folder {
 export interface Collection {
     id: number,
     name: string,
-    slug: string
+    slug: string,
+    folder_id: string
 }
 
 export interface Todo {
