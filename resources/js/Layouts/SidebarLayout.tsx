@@ -1,5 +1,5 @@
 import {Sheet, SheetContent, SheetTrigger} from "@/Components/ui/sheet";
-import {PropsWithChildren, useEffect, useState} from "react";
+import {PropsWithChildren} from "react";
 import {cn} from "@/lib/utils";
 import {MenuIcon} from 'lucide-react'
 import {usePage} from "@inertiajs/react";
@@ -8,20 +8,12 @@ import {Avatar, AvatarImage} from "@/Components/ui/avatar";
 import {CreateFolder} from "@/features/folders";
 import {ScrollArea} from "@/Components/ui/scroll-area";
 import {FolderItem} from "@/features/folders/FolderItem";
+import {useIsDesktop} from "@/lib/hooks";
 
 export function SidebarLayout({children}: PropsWithChildren) {
-    const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768)
+    const isDesktop = useIsDesktop()
     const {auth, folders} = usePage<PageProps>().props
 
-
-    const updateMedia = () => {
-        setIsDesktop(window.innerWidth > 768)
-    }
-
-    useEffect(() => {
-        window.addEventListener('resize', updateMedia)
-        return () => window.removeEventListener('resize', updateMedia)
-    });
     return (
         <>
             <Sheet defaultOpen={isDesktop} modal={!isDesktop} {...(isDesktop && {open: true})} >
@@ -43,7 +35,6 @@ export function SidebarLayout({children}: PropsWithChildren) {
                             </Avatar>
                             <span className='text-lg font-medium text-foreground'>{auth.user.name}</span>
                         </div>
-
                         <ScrollArea className='h-[600px]'>
                             <ul className='space-y-2 p-2'>
                                 {folders.map(folder => <li key={folder.id}>
@@ -54,7 +45,6 @@ export function SidebarLayout({children}: PropsWithChildren) {
                     </div>
                     <div className='mt-auto'>
                         <CreateFolder/>
-
                     </div>
                 </SheetContent>
             </Sheet>
