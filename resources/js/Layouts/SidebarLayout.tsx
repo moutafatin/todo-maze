@@ -2,7 +2,7 @@ import {Sheet, SheetContent, SheetTrigger} from "@/Components/ui/sheet";
 import {PropsWithChildren, useEffect, useState} from "react";
 import {cn} from "@/lib/utils";
 import {ChevronsUpDown, FolderIcon, ListIcon, MenuIcon, PlusIcon} from 'lucide-react'
-import {usePage} from "@inertiajs/react";
+import {useForm, usePage} from "@inertiajs/react";
 import {PageProps} from "@/types";
 import {Avatar, AvatarImage} from "@/Components/ui/avatar";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/Components/ui/collapsible";
@@ -17,10 +17,17 @@ import {
     DialogTrigger
 } from "@/Components/ui/dialog";
 import {Input} from "@/Components/ui/input";
+import {CreateFolder} from "@/features/folders";
 
 export function SidebarLayout({children}: PropsWithChildren) {
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768)
     const {auth, folders} = usePage<PageProps>().props
+
+    const [openFolderForm, setOpenFolderForm] = useState(false)
+
+    const {data, setData, post, errors, processing, reset} = useForm({
+        name: ''
+    })
     const updateMedia = () => {
         setIsDesktop(window.innerWidth > 768)
     }
@@ -112,32 +119,7 @@ export function SidebarLayout({children}: PropsWithChildren) {
                         </ul>
                     </div>
                     <div className='mt-auto'>
-                        <Dialog>
-                            <DialogTrigger asChild>
-
-                                <Button className='gap-x-3 font-semibold w-full'>
-                                    <PlusIcon/>
-                                    New folder
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Create new folder</DialogTitle>
-
-                                </DialogHeader>
-                                <form className='flex flex-col gap-y-2' id='create-folder'>
-                                    <Input placeholder='Programming'/>
-                                </form>
-                                <DialogFooter>
-
-                                    <DialogClose asChild>
-
-                                        <Button variant='outline'>Cancel</Button>
-                                    </DialogClose>
-                                    <Button form='create-folder'>Create</Button>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
+                        <CreateFolder/>
 
                     </div>
                 </SheetContent>
