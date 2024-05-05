@@ -26,7 +26,7 @@ export function CreateCollection({folder}: CreateCollectionProps) {
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault()
-        post(route('collection.store', {folder: folder.id}), {
+        post(route('collections.store', {folder: folder.id}), {
             onSuccess: () => {
                 reset('name')
                 setOpen(false)

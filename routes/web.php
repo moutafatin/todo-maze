@@ -10,12 +10,22 @@ use Inertia\Inertia;
 Route::inertia('/', 'Home')->name('home');
 Route::inertia('/app', 'App/Dashboard')->middleware('auth')->name('app.dashboard');
 
-Route::post('/app/folders/store', [FolderController::class, 'store'])->middleware('auth')->name('folders.store');
-Route::patch('/app/folders/{folder}', [FolderController::class, 'update'])->middleware('auth')->name('folders.update');
-Route::delete('/app/folders/{folder}', [FolderController::class, 'destroy'])->middleware('auth')->name('folders.destroy');
+// Add auth guard
+Route::prefix('/app/folders')->middleware('auth')->group(function () {
+    Route::controller(FolderController::class)->name('folders.')->group(function () {
+        Route::post('store', 'store')->name('store');
+        Route::patch('{folder}', 'update')->name('update');
+        Route::delete('{folder}', 'destroy')->name('destroy');
+    });
+    
+    Route::prefix('{folder}/collections')->controller(CollectionController::class)->name('collections.')->group(function () {
+        Route::post('store', 'store')->name('store');
+        Route::patch('{collection}', 'update')->name('update');
+        Route::delete('{collection}', 'destroy')->name('destroy');
+    });
 
+});
 
-Route::post('/app/folders/{folder}/collections/store', [CollectionController::class, 'store'])->middleware('auth')->name('collection.store');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

@@ -40,19 +40,19 @@ export function FolderOptions({folder}: FolderOptionsProps) {
                     <span>{folder.name}</span>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className='w-48'>
                 <DropdownMenuLabel>{folder.name} options</DropdownMenuLabel>
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem className='gap-x-2 ' asChild>
                     <Link href={route('folders.destroy', {folder: folder.id})}
-                          method='delete' as='button' className='w-full'>
-                        <Trash2Icon className='text-red-500 size-4'/>
+                          method='delete' as='button' className='w-full cursor-pointer'>
+                        <Trash2Icon className='size-4'/>
                         Delete
                     </Link>
                 </DropdownMenuItem>
                 <DialogTrigger asChild>
-                    <DropdownMenuItem className='gap-x-2 '>
-                        <Edit2Icon className='text-teal-500 size-4'/>
+                    <DropdownMenuItem className='gap-x-2 cursor-pointer'>
+                        <Edit2Icon className='size-4'/>
                         Edit
                     </DropdownMenuItem>
                 </DialogTrigger>

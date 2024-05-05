@@ -17,4 +17,23 @@ class CollectionController extends Controller
 
         return redirect()->back();
     }
+
+
+    public function update(Request $request, Folder $folder, Collection $collection)
+    {
+        $request->validate(['name' => 'required']);
+
+        $collection->name = $request['name'];
+        $collection->save();
+
+        return back();
+    }
+
+
+    public function destroy(Request $request, Folder $folder, Collection $collection)
+    {
+        $collection->delete();
+
+        return back();
+    }
 }
