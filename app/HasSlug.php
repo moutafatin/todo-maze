@@ -11,10 +11,17 @@ trait HasSlug
         static::creating(function ($model) {
             $model->generateUniqueSlug();
         });
+
+
+        static::updating(function ($model) {
+            if ($model->isDirty($model->getSlugField())) {
+                $model->generateUniqueSlug();
+            }
+        });
     }
 
 
-    protected function generateUniqueSlug()
+    protected function generateUniqueSlug(): void
     {
         $slugField = $this->getSlugField();
         $slug = Str::slug($this->$slugField);
@@ -31,7 +38,7 @@ trait HasSlug
     }
 
 
-    protected function getSlugField()
+    protected function getSlugField(): string
     {
         return 'name';
     }

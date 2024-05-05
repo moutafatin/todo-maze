@@ -19,4 +19,24 @@ class FolderController extends Controller
 
         return redirect()->back();
     }
+
+
+    public function update(Request $request, Folder $folder)
+    {
+        $request->validate(['name' => 'required']);
+
+        $folder->name = $request['name'];
+        $folder->save();
+
+        return back();
+    }
+
+
+    public function destroy(Folder $folder)
+    {
+        $folder->delete();
+        return back();
+    }
+
+
 }

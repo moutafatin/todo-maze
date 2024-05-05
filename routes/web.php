@@ -11,6 +11,9 @@ Route::inertia('/', 'Home')->name('home');
 Route::inertia('/app', 'App/Dashboard')->middleware('auth')->name('app.dashboard');
 
 Route::post('/app/folders/store', [FolderController::class, 'store'])->middleware('auth')->name('folders.store');
+Route::patch('/app/folders/{folder}', [FolderController::class, 'update'])->middleware('auth')->name('folders.update');
+Route::delete('/app/folders/{folder}', [FolderController::class, 'destroy'])->middleware('auth')->name('folders.destroy');
+
 
 Route::post('/app/folders/{folder}/collections/store', [CollectionController::class, 'store'])->middleware('auth')->name('collection.store');
 
