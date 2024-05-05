@@ -1,33 +1,20 @@
 import {Sheet, SheetContent, SheetTrigger} from "@/Components/ui/sheet";
 import {PropsWithChildren, useEffect, useState} from "react";
 import {cn} from "@/lib/utils";
-import {ChevronsUpDown, FolderIcon, ListIcon, MenuIcon, PlusIcon} from 'lucide-react'
-import {useForm, usePage} from "@inertiajs/react";
+import {ChevronsUpDown, FolderIcon, ListIcon, MenuIcon} from 'lucide-react'
+import {usePage} from "@inertiajs/react";
 import {PageProps} from "@/types";
 import {Avatar, AvatarImage} from "@/Components/ui/avatar";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/Components/ui/collapsible";
 import {Button} from "@/Components/ui/button";
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from "@/Components/ui/dialog";
-import {Input} from "@/Components/ui/input";
 import {CreateFolder} from "@/features/folders";
+import {CreateCollection} from "@/features/collections/CreateCollection";
 
 export function SidebarLayout({children}: PropsWithChildren) {
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768)
     const {auth, folders} = usePage<PageProps>().props
 
-    const [openFolderForm, setOpenFolderForm] = useState(false)
 
-    const {data, setData, post, errors, processing, reset} = useForm({
-        name: ''
-    })
     const updateMedia = () => {
         setIsDesktop(window.innerWidth > 768)
     }
@@ -60,7 +47,6 @@ export function SidebarLayout({children}: PropsWithChildren) {
 
                         <ul className='space-y-2'>
                             {folders.map(folder => <li key={folder.id}>
-                                {/*maybe find a way to save the open state per user basis*/}
                                 <Collapsible>
 
                                     <div className='flex items-center gap-x-2' key={folder.id}>
@@ -83,34 +69,7 @@ export function SidebarLayout({children}: PropsWithChildren) {
                                             </li>)}
                                             <li>
 
-                                                <Dialog>
-                                                    <DialogTrigger asChild>
-                                                        <Button variant='ghost'
-                                                                className='w-full justify-start gap-x-2 h-8'>
-                                                            <PlusIcon/>
-                                                            New collection
-                                                        </Button>
-                                                    </DialogTrigger>
-                                                    <DialogContent>
-                                                        <DialogHeader>
-                                                            <DialogTitle>Create new collection
-                                                                inside {folder.name}</DialogTitle>
-
-                                                        </DialogHeader>
-                                                        <form className='flex flex-col gap-y-2'
-                                                              id={`create-collection-${folder.slug}`}>
-                                                            <Input placeholder='Web Project'/>
-                                                        </form>
-                                                        <DialogFooter>
-                                                            <DialogClose asChild>
-
-                                                                <Button variant='outline'>Cancel</Button>
-                                                            </DialogClose>
-                                                            <Button
-                                                                form={`create-collection-${folder.slug}`}>Create</Button>
-                                                        </DialogFooter>
-                                                    </DialogContent>
-                                                </Dialog>
+                                                <CreateCollection folder={folder}/>
                                             </li>
                                         </ul>
                                     </CollapsibleContent>

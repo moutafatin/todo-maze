@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,8 @@ Route::inertia('/', 'Home')->name('home');
 Route::inertia('/app', 'App/Dashboard')->middleware('auth')->name('app.dashboard');
 
 Route::post('/app/folders/store', [FolderController::class, 'store'])->middleware('auth')->name('folders.store');
+
+Route::post('/app/folders/{folder}/collections/store', [CollectionController::class, 'store'])->middleware('auth')->name('collection.store');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
