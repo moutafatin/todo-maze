@@ -9,6 +9,7 @@ import {CreateFolder} from "@/features/folders";
 import {ScrollArea} from "@/Components/ui/scroll-area";
 import {FolderItem} from "@/features/folders/FolderItem";
 import {useIsDesktop} from "@/lib/hooks";
+import {FocusScope} from '@radix-ui/react-focus-scope'
 
 export function SidebarLayout({children}: PropsWithChildren) {
     const isDesktop = useIsDesktop()
@@ -16,38 +17,40 @@ export function SidebarLayout({children}: PropsWithChildren) {
 
     return (
         <>
-            <Sheet defaultOpen={isDesktop} modal={!isDesktop} {...(isDesktop && {open: true})} >
-                <SheetTrigger className='hover:bg-secondary p-2 transition-colors md:hidden'>
-                    <MenuIcon/>
-                </SheetTrigger>
-                <SheetContent side='left'
-                              className={cn('w-80 flex flex-col', isDesktop && 'data-[state=open]:slide-in-from-right-0 focus:outline-none')}
-                              onInteractOutside={(e) => {
-                                  if (isDesktop) {
-                                      e.preventDefault()
-                                      return
-                                  }
-                              }}>
-                    <div>
-                        <div className='flex items-center gap-x-2 mb-16'>
-                            <Avatar className='size-12'>
-                                <AvatarImage src={auth.user.avatar_url}/>
-                            </Avatar>
-                            <span className='text-lg font-medium text-foreground'>{auth.user.name}</span>
+            <FocusScope trapped={false}>
+                <Sheet defaultOpen={isDesktop} modal={!isDesktop} {...(isDesktop && {open: true})} >
+                    <SheetTrigger className='hover:bg-secondary p-2 transition-colors md:hidden'>
+                        <MenuIcon/>
+                    </SheetTrigger>
+                    <SheetContent side='left'
+                                  className={cn('w-80 flex flex-col', isDesktop && 'data-[state=open]:slide-in-from-right-0 focus:outline-none')}
+                                  onInteractOutside={(e) => {
+                                      if (isDesktop) {
+                                          e.preventDefault()
+                                          return
+                                      }
+                                  }}>
+                        <div>
+                            <div className='flex items-center gap-x-2 mb-16'>
+                                <Avatar className='size-12'>
+                                    <AvatarImage src={auth.user.avatar_url}/>
+                                </Avatar>
+                                <span className='text-lg font-medium text-foreground'>{auth.user.name}</span>
+                            </div>
+                            <ScrollArea className='h-[600px]'>
+                                <ul className='space-y-2 p-2'>
+                                    {folders.map(folder => <li key={folder.id}>
+                                        <FolderItem folder={folder}/>
+                                    </li>)}
+                                </ul>
+                            </ScrollArea>
                         </div>
-                        <ScrollArea className='h-[600px]'>
-                            <ul className='space-y-2 p-2'>
-                                {folders.map(folder => <li key={folder.id}>
-                                    <FolderItem folder={folder}/>
-                                </li>)}
-                            </ul>
-                        </ScrollArea>
-                    </div>
-                    <div className='mt-auto'>
-                        <CreateFolder/>
-                    </div>
-                </SheetContent>
-            </Sheet>
+                        <div className='mt-auto'>
+                            <CreateFolder/>
+                        </div>
+                    </SheetContent>
+                </Sheet>
+            </FocusScope>
             <main className='md:ml-80'>
                 {children}
             </main>
