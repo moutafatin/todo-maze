@@ -1,7 +1,6 @@
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/Components/ui/collapsible";
 import {Button} from "@/Components/ui/button";
 import {ChevronRight} from "lucide-react";
-import {CreateCollection} from "@/features/collections/CreateCollection";
 import {Folder} from "@/types";
 import {FolderOptions} from "@/features/folders/FolderOptions";
 import {CollectionItem} from "@/features/collections/CollectionItem";
@@ -24,10 +23,10 @@ export function FolderItem({folder}: FolderItemProps) {
         </div>
         <CollapsibleContent className='CollapsibleContent'>
             <ul className='ml-4 p-2 space-y-1'>
+                {folder.collections.length === 0 &&
+                    <li className='text-slate-500 text-sm ml-2'>This folder is empty. Start by adding a new
+                        collection.</li>}
                 {folder.collections.map(collection => <CollectionItem collection={collection} key={collection.id}/>)}
-                <li>
-                    <CreateCollection folder={folder}/>
-                </li>
             </ul>
         </CollapsibleContent>
     </Collapsible>
