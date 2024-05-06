@@ -10,6 +10,7 @@ import {ScrollArea} from "@/Components/ui/scroll-area";
 import {FolderItem} from "@/features/folders/FolderItem";
 import {useIsDesktop} from "@/lib/hooks";
 import {FocusScope} from '@radix-ui/react-focus-scope'
+import {Separator} from "@/Components/ui/separator";
 
 export function SidebarLayout({children}: PropsWithChildren) {
     const isDesktop = useIsDesktop()
@@ -18,12 +19,12 @@ export function SidebarLayout({children}: PropsWithChildren) {
     return (
         <>
             <FocusScope trapped={false}>
-                <Sheet defaultOpen={isDesktop} modal={!isDesktop} {...(isDesktop && {open: true})} >
+                <Sheet defaultOpen={isDesktop} modal={!isDesktop} {...(isDesktop && {open: true})}>
                     <SheetTrigger className='hover:bg-secondary p-2 transition-colors md:hidden'>
                         <MenuIcon/>
                     </SheetTrigger>
                     <SheetContent side='left'
-                                  className={cn('w-80 flex flex-col', isDesktop && 'data-[state=open]:slide-in-from-right-0 focus:outline-none')}
+                                  className={cn('w-80 flex flex-col p-0', isDesktop && 'data-[state=open]:slide-in-from-right-0 focus:outline-none')}
                                   onInteractOutside={(e) => {
                                       if (isDesktop) {
                                           e.preventDefault()
@@ -31,21 +32,29 @@ export function SidebarLayout({children}: PropsWithChildren) {
                                       }
                                   }}>
                         <div>
-                            <div className='flex items-center gap-x-2 mb-16'>
+                            <div className='flex items-center gap-x-2 px-4 pt-4'>
                                 <Avatar className='size-12'>
                                     <AvatarImage src={auth.user.avatar_url}/>
                                 </Avatar>
-                                <span className='text-lg font-medium text-foreground'>{auth.user.name}</span>
+                                <div className='flex flex-col'>
+
+                                    <span className='font-medium text-foreground'>{auth.user.name}</span>
+                                    <span className='text-sm font-medium text-foreground'>{auth.user.email}</span>
+                                </div>
                             </div>
+
+                            <Separator className='my-5'/>
                             <ScrollArea className='h-[600px]'>
-                                <ul className='space-y-2 p-2'>
-                                    {folders.map(folder => <li key={folder.id}>
-                                        <FolderItem folder={folder}/>
-                                    </li>)}
-                                </ul>
+                                <div className='p-4'>
+                                    <ul className='space-y-2'>
+                                        {folders.map(folder => <li key={folder.id}>
+                                            <FolderItem folder={folder}/>
+                                        </li>)}
+                                    </ul>
+                                </div>
                             </ScrollArea>
                         </div>
-                        <div className='mt-auto'>
+                        <div className='mt-auto p-4'>
                             <CreateFolder/>
                         </div>
                     </SheetContent>

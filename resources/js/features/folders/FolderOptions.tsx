@@ -28,7 +28,7 @@ export function FolderOptions({folder}: FolderOptionsProps) {
     return <Dialog open={open} onOpenChange={setOpen}>
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant='ghost' className='gap-x-2 w-full justify-start'>
+                <Button variant='ghost' className='gap-x-2 w-full justify-start focus-visible:ring-1'>
                     <FolderIcon/>
                     <span>{folder.name}</span>
                 </Button>

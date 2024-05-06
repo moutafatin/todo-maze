@@ -12,7 +12,7 @@ type FolderItemProps = {
 }
 
 export function FolderItem({folder}: FolderItemProps) {
-    return <Collapsible>
+    return <Collapsible className=''>
         <div className='flex items-center gap-x-2'>
             <FolderOptions folder={folder}/>
             <CollapsibleTrigger className='transition data-[state=open]:rotate-90 data-[state=close]:rotate-0' asChild>
