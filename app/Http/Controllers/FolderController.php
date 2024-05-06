@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Folder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class FolderController extends Controller
 {
@@ -13,9 +11,8 @@ class FolderController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required']);
-
-        Folder::create(['name' => $request['name'], 'user_id' => Auth::user()->id, 'slug' => Str::slug($request['name'] . '-' . uniqid('', true))]);
+        $validatedData = $request->validate(['name' => 'required']);
+        $request->user()->folders()->create($validatedData);
 
         return redirect()->back();
     }

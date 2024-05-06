@@ -11,9 +11,8 @@ class CollectionController extends Controller
 
     public function store(Request $request, Folder $folder)
     {
-        $request->validate(['name' => 'required']);
-
-        Collection::create(['name' => $request['name'], 'folder_id' => $folder->id]);
+        $validatedData = $request->validate(['name' => 'required']);
+        $folder->collections()->create($validatedData);
 
         return redirect()->back();
     }
