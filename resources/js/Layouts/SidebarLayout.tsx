@@ -1,8 +1,8 @@
 import {Sheet, SheetContent, SheetTrigger} from "@/Components/ui/sheet";
 import {PropsWithChildren} from "react";
 import {cn} from "@/lib/utils";
-import {MenuIcon} from 'lucide-react'
-import {usePage} from "@inertiajs/react";
+import {ChevronDown, LogOutIcon, MenuIcon} from 'lucide-react'
+import {Link, usePage} from "@inertiajs/react";
 import {PageProps} from "@/types";
 import {Avatar, AvatarImage} from "@/Components/ui/avatar";
 import {CreateFolder} from "@/features/folders";
@@ -11,6 +11,7 @@ import {FolderItem} from "@/features/folders/FolderItem";
 import {useIsDesktop} from "@/lib/hooks";
 import {FocusScope} from '@radix-ui/react-focus-scope'
 import {Separator} from "@/Components/ui/separator";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/Components/ui/dropdown-menu";
 
 export function SidebarLayout({children}: PropsWithChildren) {
     const isDesktop = useIsDesktop()
@@ -32,18 +33,33 @@ export function SidebarLayout({children}: PropsWithChildren) {
                                       }
                                   }}>
                         <div>
-                            <div className='flex items-center gap-x-2 px-4 pt-4'>
-                                <Avatar className='size-12'>
-                                    <AvatarImage src={auth.user.avatar_url}/>
-                                </Avatar>
-                                <div className='flex flex-col'>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <div
+                                        className='flex items-center gap-x-2 px-4 py-4 transition-colors hover:bg-gray-200/50 cursor-pointer'>
+                                        <Avatar className='size-12'>
+                                            <AvatarImage src={auth.user.avatar_url}/>
+                                        </Avatar>
+                                        <div className='flex flex-col'>
+                                            <span className='font-medium text-foreground'>{auth.user.name}</span>
+                                            <span
+                                                className='text-sm font-medium text-foreground'>{auth.user.email}</span>
+                                        </div>
 
-                                    <span className='font-medium text-foreground'>{auth.user.name}</span>
-                                    <span className='text-sm font-medium text-foreground'>{auth.user.email}</span>
-                                </div>
-                            </div>
+                                        <ChevronDown className='ml-auto text-slate-600'/>
+                                    </div>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuItem asChild><Link href={route('logout')} method='post' as="button"
+                                                                    className='w-full gap-x-2'
+                                                                    replace>
+                                        <LogOutIcon className='size-4'/>
+                                        Logout
+                                    </Link></DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
 
-                            <Separator className='my-5'/>
+                            <Separator className='mb-5'/>
                             <ScrollArea className='h-[600px]'>
                                 <div className='p-4'>
                                     <ul className='space-y-2'>
