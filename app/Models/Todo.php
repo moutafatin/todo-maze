@@ -11,6 +11,8 @@ class Todo extends Model
     use HasFactory;
 
 
+    protected $fillable = ['task', 'status'];
+
     public function collection(): BelongsTo
     {
         return $this->belongsTo(Collection::class);
