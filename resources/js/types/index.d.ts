@@ -19,7 +19,6 @@ export interface Collection {
     name: string,
     slug: string,
     folder_slug: string
-    todos: Todo[]
 }
 
 
