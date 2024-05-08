@@ -26,7 +26,7 @@ export default function TodosPage({collection}: TodosProps) {
     }, [collection]);
     return <SidebarLayout>
         <div className='flex flex-col h-screen'>
-            <div className='bg-primary h-64 flex items-end'>
+            <div className='bg-primary flex-shrink-0 h-40 flex items-end'>
                 <h1 className='text-primary-foreground text-5xl capitalize p-4'>{collection.name}</h1>
             </div>
 
