@@ -20,7 +20,7 @@ class TodoFactory extends Factory
         return [
             'task' => fake()->sentence(),
             'status' => fake()->randomElement(['not_started', 'in_progress', 'completed']),
-            'collection_id' => Collection::factory()
+            'collection_slug' => Collection::factory()
         ];
     }
 }

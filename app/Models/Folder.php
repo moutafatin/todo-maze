@@ -23,7 +23,12 @@ class Folder extends Model
 
     public function collections(): HasMany
     {
-        return $this->hasMany(Collection::class);
+        return $this->hasMany(Collection::class, 'folder_slug', 'slug');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
 

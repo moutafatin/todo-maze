@@ -25,7 +25,7 @@ export function FolderOptions({folder}: FolderOptionsProps) {
 
     const onEditFolder = (e: FormEvent) => {
         e.preventDefault()
-        patch(route('folders.update', {folder: folder.id}), {
+        patch(route('folders.update', {folder: folder.slug}), {
             onSuccess: () => {
                 reset('name')
                 setIsEditOpen(false)
@@ -33,7 +33,7 @@ export function FolderOptions({folder}: FolderOptionsProps) {
         })
     }
 
-    const onDeleteFolder = () => router.delete(route('folders.destroy', {folder: folder.id}))
+    const onDeleteFolder = () => router.delete(route('folders.destroy', {folder: folder.slug}))
 
     return <>
         <DropdownMenu>

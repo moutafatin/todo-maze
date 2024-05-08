@@ -25,7 +25,7 @@ export function CreateCollection({folder, open, onOpenChange}: CreateCollectionP
 
     const createCollection = (e: FormEvent) => {
         e.preventDefault()
-        post(route('collections.store', {folder: folder.id}), {
+        post(route('collections.store', {folder: folder.slug}), {
             onSuccess: () => {
                 reset('name')
                 onOpenChange?.(false)

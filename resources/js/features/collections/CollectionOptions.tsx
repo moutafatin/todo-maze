@@ -23,7 +23,7 @@ export function CollectionOptions({collection}: CollectionOptionsProps) {
 
     const onEditCollection = (e: FormEvent) => {
         e.preventDefault()
-        patch(route('collections.update', {folder: collection.folder_id, collection: collection.id}), {
+        patch(route('collections.update', {folder: collection.folder_slug, collection: collection.id}), {
             onSuccess: () => {
                 reset('name')
                 setIsEditOpen(false)
@@ -32,7 +32,7 @@ export function CollectionOptions({collection}: CollectionOptionsProps) {
     }
 
     const onDeleteCollection = () => router.delete(route('collections.destroy', {
-        folder: collection.folder_id,
+        folder: collection.folder_slug,
         collection: collection.id
     }))
 

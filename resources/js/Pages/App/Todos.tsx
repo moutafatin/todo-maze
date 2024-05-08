@@ -45,7 +45,7 @@ export default function TodosPage({collection}: TodosProps) {
                 </ul>
             </ScrollArea>
             <div className='p-4 mt-auto'>
-                <CreateTodo collectionId={collection.id} folderId={collection.folder_id}/>
+                <CreateTodo folderSlug={collection.folder_slug} collectionSlug={collection.slug}/>
             </div>
         </div>
     </SidebarLayout>

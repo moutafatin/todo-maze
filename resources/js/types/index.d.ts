@@ -18,7 +18,7 @@ export interface Collection {
     id: number,
     name: string,
     slug: string,
-    folder_id: number
+    folder_slug: string
     todos: Todo[]
 }
 
@@ -26,7 +26,7 @@ export interface Collection {
 export interface Todo {
     id: number,
     task: string
-    collection_id: number,
+    collection_slug: string,
     status: 'not_started' | 'in_progress' | 'completed'
 }
 

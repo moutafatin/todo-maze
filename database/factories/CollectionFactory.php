@@ -23,7 +23,7 @@ class CollectionFactory extends Factory
         return [
             'name' => $name,
             'slug' => $slug,
-            'folder_id' => Folder::factory()
+            'folder_slug' => Folder::factory()
         ];
     }
 }

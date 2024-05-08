@@ -15,6 +15,6 @@ class Todo extends Model
 
     public function collection(): BelongsTo
     {
-        return $this->belongsTo(Collection::class);
+        return $this->belongsTo(Collection::class, 'collection_slug', 'slug');
     }
 }

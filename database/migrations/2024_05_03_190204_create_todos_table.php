@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Collection;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->text('task');
             $table->enum('status', ['not_started', 'in_progress', 'completed'])->default('not_started');
-            $table->foreignIdFor(Collection::class)->constrained()->onDelete('cascade');
+            $table->string('collection_slug');
+            $table->foreign('collection_slug')->references('slug')->on('collections')->cascadeOnDelete();
             $table->timestamps();
         });
     }

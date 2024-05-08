@@ -13,16 +13,22 @@ class Collection extends Model
     use HasFactory;
     use HasSlug;
 
-    protected $fillable = ['name', 'slug', 'folder_id'];
+    protected $fillable = ['name', 'slug', 'folder_slug'];
 
     public function folder(): BelongsTo
     {
-        return $this->belongsTo(Folder::class);
+        return $this->belongsTo(Folder::class, 'folder_slug', 'slug');
     }
 
 
     public function todos(): HasMany
     {
-        return $this->hasMany(Todo::class);
+        return $this->hasMany(Todo::class, 'collection_slug', 'slug');
+    }
+
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

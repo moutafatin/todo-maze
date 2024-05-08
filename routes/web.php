@@ -26,7 +26,7 @@ Route::prefix('/app/folders')->middleware('auth')->group(function () {
     });
 
 
-    Route::prefix('{folder}/collections/{collection}/todos')->controller(TodoController::class)->name('todos.')->group(function () {
+    Route::prefix('{folder}/collections/{collection}/todos')->scopeBindings()->controller(TodoController::class)->name('todos.')->group(function () {
         Route::get('', [TodoController::class, 'index'])->name('index');
         Route::post('', [TodoController::class, 'store'])->name('store');
     });
