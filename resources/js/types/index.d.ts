@@ -19,6 +19,15 @@ export interface Collection {
     name: string,
     slug: string,
     folder_id: string
+    todos: Todo[]
+}
+
+
+export interface Todo {
+    id: number,
+    task: string
+    collection_id: number,
+    status: 'not_started' | 'in_progress' | 'completed'
 }
 
 export interface Todo {

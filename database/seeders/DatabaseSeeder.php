@@ -6,9 +6,9 @@ use App\Models\Collection;
 use App\Models\Folder;
 use App\Models\Todo;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
 
         Folder::factory(2)->for($user)->create()->each(function (Folder $folder) {
             Collection::factory(3)->for($folder)->create()->each(function (Collection $collection) {
-                Todo::factory(5)->for($collection)->create();
+                Todo::factory(20)->for($collection)->create();
             });
         });
 

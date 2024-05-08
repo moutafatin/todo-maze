@@ -21,7 +21,8 @@ export function SidebarLayout({children}: PropsWithChildren) {
         <>
             <FocusScope trapped={false}>
                 <Sheet defaultOpen={isDesktop} modal={!isDesktop} {...(isDesktop && {open: true})}>
-                    <SheetTrigger className='hover:bg-secondary p-2 transition-colors md:hidden'>
+                    <SheetTrigger
+                        className='hover:bg-slate-100 hover:text-primary rounded-md top-1 left-1 p-2 transition-colors md:hidden absolute text-primary-foreground'>
                         <MenuIcon/>
                     </SheetTrigger>
                     <SheetContent side='left'
