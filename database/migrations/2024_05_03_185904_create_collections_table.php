@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('folder_slug');
-            $table->foreign('folder_slug')->references('slug')->on('folders')->cascadeOnDelete();
+            $table->foreign('folder_slug')->references('slug')->on('folders')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

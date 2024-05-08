@@ -14,6 +14,7 @@ class FolderController extends Controller
         $validatedData = $request->validate(['name' => 'required']);
         $request->user()->folders()->create($validatedData);
 
+
         return redirect()->back();
     }
 
@@ -25,14 +26,15 @@ class FolderController extends Controller
         $folder->name = $request['name'];
         $folder->save();
 
-        return back();
+
+        return redirect()->route('dashboard');
     }
 
 
     public function destroy(Folder $folder)
     {
         $folder->delete();
-        return back();
+        return redirect()->route('dashboard');
     }
 
 

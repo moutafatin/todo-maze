@@ -27,7 +27,7 @@ export default function TodosPage({collection, todos}: TodosProps) {
             </div>
 
             <ScrollArea viewportRef={ref}>
-                <ul className='p-4 space-y-2 flex-grow overflow-hidden'>
+                <ul className='p-4 space-y-2'>
                     {todos.map(todo => <TodoItem todo={todo} key={todo.id}/>
                     )}
                 </ul>

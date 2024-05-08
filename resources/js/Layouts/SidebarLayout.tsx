@@ -47,7 +47,7 @@ export function SidebarLayout({children}: PropsWithChildren) {
                                                 className='text-sm font-medium text-foreground'>{auth.user.email}</span>
                                         </div>
 
-                                        <ChevronDown className='ml-auto text-slate-600'/>
+                                        <ChevronDown className='ml-auto hidden md:block text-slate-600'/>
                                     </div>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>

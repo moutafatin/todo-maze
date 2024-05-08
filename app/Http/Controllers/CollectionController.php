@@ -12,9 +12,8 @@ class CollectionController extends Controller
     public function store(Request $request, Folder $folder)
     {
         $validatedData = $request->validate(['name' => 'required']);
-        $folder->collections()->create($validatedData);
-
-        return redirect()->back();
+        $collection = $folder->collections()->create($validatedData);
+        return redirect()->route('todos.index', [$folder, $collection]);
     }
 
 
@@ -25,7 +24,7 @@ class CollectionController extends Controller
         $collection->name = $request['name'];
         $collection->save();
 
-        return back();
+        return redirect()->route('todos.index', [$folder, $collection]);
     }
 
 
@@ -33,6 +32,6 @@ class CollectionController extends Controller
     {
         $collection->delete();
 
-        return back();
+        return redirect()->route('dashboard');
     }
 }
