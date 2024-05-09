@@ -28,7 +28,7 @@ export default function TodosPage({collection, todos}: TodosProps) {
 
             <ScrollArea viewportRef={ref}>
                 <ul className='p-4 space-y-2'>
-                    {todos.map(todo => <TodoItem todo={todo} key={todo.id}/>
+                    {todos.map(todo => <TodoItem folderSlug={collection.folder_slug} todo={todo} key={todo.id}/>
                     )}
                 </ul>
             </ScrollArea>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Collection;
 use App\Models\Folder;
+use App\Models\Todo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -22,6 +23,13 @@ class TodoController extends Controller
         $validatedData = $request->validate(['task' => 'required']);
         $collection->todos()->create($validatedData);
 
+
+        return back();
+    }
+
+    public function destroy(Folder $folder, Collection $collection, Todo $todo)
+    {
+        $todo->delete();
 
         return back();
     }
