@@ -5,7 +5,7 @@ import {Todo} from "@/types";
 import {Sheet, SheetContent, SheetFooter, SheetTrigger} from "@/Components/ui/sheet";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
-import {router} from "@inertiajs/react";
+import {router, useForm} from "@inertiajs/react";
 import {ConfirmationDialog} from "@/Components/ConfirmationDialog";
 import {useState} from "react";
 import {Separator} from "@/Components/ui/separator";
@@ -21,6 +21,10 @@ type TodoItemProps = {
 
 export function TodoItem({todo, folderSlug}: TodoItemProps) {
     const [openDelete, setOpenDelete] = useState(false)
+    const {data, setData, patch} = useForm({
+        note: todo.note.content
+    })
+    const initialNoteContent = todo.note.content;
     return <li className=''>
         <Sheet>
             <SheetTrigger asChild>
@@ -58,10 +62,19 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
 
                         <Separator/>
                         <Textarea placeholder='Add a note'
+                                  value={data.note}
+                                  onChange={(e) => setData('note', e.target.value)}
                                   className='border-none flex-grow focus-visible:ring-1 focus:outline-none focus:ring-0 hover:bg-slate-100 transition-colors'
                                   onBlur={() => {
-                                      console.log('note registered')
-                                  }}/>
+                                      if (data.note.trim() !== initialNoteContent) {
+                                          patch(route('todos.update', {
+                                              folder: folderSlug,
+                                              collection: todo.collection_slug,
+                                              todo: todo.id
+                                          }))
+                                      }
+                                  }}
+                        />
 
 
                     </div>

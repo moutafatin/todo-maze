@@ -34,7 +34,15 @@ export interface Todo {
 export interface Todo {
     id: number,
     task: string,
-    status: 'not_started' | 'in_progress' | 'completed'
+    status: 'not_started' | 'in_progress' | 'completed',
+    note: Note
+}
+
+
+export interface Note {
+    id: number
+    content: string
+    todo_id: number
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {

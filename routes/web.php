@@ -30,6 +30,7 @@ Route::prefix('/app/folders')->middleware('auth')->group(function () {
         Route::get('', [TodoController::class, 'index'])->name('index');
         Route::post('', [TodoController::class, 'store'])->name('store');
         Route::delete('{todo}', [TodoController::class, 'destroy'])->name('destroy');
+        Route::patch('{todo}', [TodoController::class, 'update'])->name('update');
     });
 
 });

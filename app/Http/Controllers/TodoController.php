@@ -14,7 +14,7 @@ class TodoController extends Controller
     public function index(Folder $folder, Collection $collection)
     {
 //        dd($folder->collections);
-        return Inertia::render('App/Todos', ['collection' => $collection, 'todos' => $collection->todos]);
+        return Inertia::render('App/Todos', ['collection' => $collection, 'todos' => $collection->todos->load('note')]);
     }
 
 
@@ -30,6 +30,17 @@ class TodoController extends Controller
     public function destroy(Folder $folder, Collection $collection, Todo $todo)
     {
         $todo->delete();
+
+        return back();
+    }
+
+
+    public function update(Request $request, Folder $folder, Collection $collection, Todo $todo)
+    {
+        $validatedData = $request->validate(['note' => 'nullable']);
+
+        $todo->note->content = $validatedData['note'];
+        $todo->save();
 
         return back();
     }
