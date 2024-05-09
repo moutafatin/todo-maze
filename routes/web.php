@@ -3,6 +3,7 @@
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubTodoController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,13 @@ Route::prefix('/app')->middleware('auth')->group(function () {
         Route::patch('{todo}', [TodoController::class, 'update'])->name('update')->can('manage-todos,todo');
     })->scopeBindings();
 
+});
+
+
+Route::prefix('/todos/{todo}/sub-todos')->middleware('auth')->name('subTodos.')->group(function () {
+    Route::post('', [SubTodoController::class, 'store'])->name('store');
+    Route::delete('{subTodo}', [SubTodoController::class, 'destroy'])->name('destroy');
+    Route::patch('{subTodo}', [SubTodoController::class, 'update'])->name('update');
 });
 
 

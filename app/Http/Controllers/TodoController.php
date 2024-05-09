@@ -44,10 +44,6 @@ class TodoController extends Controller
             return back();
         }
 
-        if ($request->has('subTodo')) {
-            $todo->subTodos()->create(['content' => $validatedData['subTodo']]);
-        }
-
 
         return back();
     }

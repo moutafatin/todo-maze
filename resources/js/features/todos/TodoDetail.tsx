@@ -1,15 +1,14 @@
 import {Todo} from "@/types";
 import {Checkbox} from "@/Components/ui/checkbox";
-import {Input} from "@/Components/ui/input";
 import {Button} from "@/Components/ui/button";
 import {CalendarIcon, PlusIcon, SunIcon} from "lucide-react";
 import {Separator} from "@/Components/ui/separator";
 import dayjs from "dayjs";
 import {DeleteTodo} from "@/features/todos/DeleteTodo";
 import {SubTodoItem} from "@/features/todos/subTodos/SubTodoItem";
-import {FormEvent, useState} from "react";
-import {useForm} from "@inertiajs/react";
+import {useState} from "react";
 import {NoteTextArea} from "@/features/todos/NoteTextArea";
+import {CreateSubTodo} from "@/features/todos/subTodos/CreateSubTodo";
 
 
 type TodoDetailProps = {
@@ -20,25 +19,6 @@ type TodoDetailProps = {
 export function TodoDetail({todo}: TodoDetailProps) {
     const [openDelete, setOpenDelete] = useState(false)
     const [isAddNextStep, setIsAddNextStep] = useState(false)
-
-
-    const addSubTodo = useForm({
-        subTodo: ''
-    })
-
-
-    const onAddSubTodo = (e: FormEvent) => {
-        e.preventDefault()
-        addSubTodo.patch(route('todos.update', {
-            collection: todo.collection_slug,
-            todo: todo.id
-        }), {
-            onSuccess: () => {
-                setIsAddNextStep(false)
-                addSubTodo.reset()
-            }
-        })
-    }
 
 
     return <div className='flex flex-col h-full'>
@@ -54,12 +34,7 @@ export function TodoDetail({todo}: TodoDetailProps) {
             </div>
             <div className='space-y-4 flex-grow flex flex-col items-start mt-4'>
                 {isAddNextStep &&
-                    <form className='w-full' onSubmit={onAddSubTodo}>
-                        <Input name='sub_todo' value={addSubTodo.data.subTodo}
-                               onChange={(e) => addSubTodo.setData('subTodo', e.target.value)}
-                               placeholder='Add a sub task'
-                               className='w-full' autoFocus/>
-                    </form>
+                    <CreateSubTodo todoId={todo.id} onSuccess={() => setIsAddNextStep(false)}/>
                 }
                 <Button variant='ghost'
                         className='gap-x-2 text-indigo-500 hover:text-indigo-600 w-full justify-start'
