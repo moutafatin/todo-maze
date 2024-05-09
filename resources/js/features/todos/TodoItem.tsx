@@ -1,17 +1,17 @@
 import {Checkbox} from "@/Components/ui/checkbox";
 import {Button} from "@/Components/ui/button";
-import {CalendarIcon, PlusIcon, StarIcon, SunIcon, TrashIcon} from "lucide-react";
+import {CalendarIcon, PlusIcon, StarIcon, SunIcon} from "lucide-react";
 import {Todo} from "@/types";
 import {Sheet, SheetContent, SheetFooter, SheetTrigger} from "@/Components/ui/sheet";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
-import {router, useForm} from "@inertiajs/react";
-import {ConfirmationDialog} from "@/Components/ConfirmationDialog";
+import {useForm} from "@inertiajs/react";
 import {FormEvent, useState} from "react";
 import {Separator} from "@/Components/ui/separator";
 import {Textarea} from "@/Components/ui/textarea";
 import {cn} from "@/lib/utils";
 import {Input} from "@/Components/ui/input";
+import {DeleteTodo} from "@/features/todos/DeleteTodo";
 
 dayjs.extend(relativeTime)
 
@@ -125,20 +125,7 @@ export function TodoItem({todo}: TodoItemProps) {
                 </div>
                 <SheetFooter className='mt-auto items-center'>
                     <p className='mr-auto'>Created {dayjs(todo.created_at).fromNow()}</p>
-                    <Button variant='ghost' onClick={() => setOpenDelete(true)}>
-
-                        <TrashIcon/>
-                    </Button>
-                    <ConfirmationDialog open={openDelete} onOpenChange={setOpenDelete} title='Delete todo'
-                                        description='Are you sure for deleting this todo?'
-                                        action={() => {
-                                            router.delete(route('todos.destroy',
-                                                {
-                                                    collection: todo.collection_slug,
-                                                    todo: todo.id
-                                                }))
-                                        }}
-                    />
+                    <DeleteTodo todo={todo}/>
                 </SheetFooter>
             </SheetContent>
         </Sheet>
