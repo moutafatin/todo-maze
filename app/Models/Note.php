@@ -10,6 +10,9 @@ class Note extends Model
 {
     use HasFactory;
 
+
+    protected $fillable = ['content'];
+
     public function todo(): BelongsTo
     {
         return $this->belongsTo(Todo::class);

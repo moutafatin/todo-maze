@@ -10,6 +10,7 @@ class SubTodo extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['content', 'completed'];
 
     public function todo(): BelongsTo
     {

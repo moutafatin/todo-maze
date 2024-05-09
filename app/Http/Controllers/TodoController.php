@@ -37,9 +37,10 @@ class TodoController extends Controller
 
     public function update(Request $request, Folder $folder, Collection $collection, Todo $todo)
     {
-        $validatedData = $request->validate(['note' => 'nullable']);
+        $validatedData = $request->validate(['note' => 'nullable', 'subTodo' => 'nullable']);
 
         $todo->note->content = $validatedData['note'];
+        $todo->subTodos()->create(['content' => $validatedData['subTodo']]);
         $todo->save();
 
         return back();

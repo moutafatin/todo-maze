@@ -6,11 +6,13 @@ import {Sheet, SheetContent, SheetFooter, SheetTrigger} from "@/Components/ui/sh
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
 import {router, useForm} from "@inertiajs/react";
+import {type VisitOptions} from '@inertiajs/core'
 import {ConfirmationDialog} from "@/Components/ConfirmationDialog";
 import {useState} from "react";
 import {Separator} from "@/Components/ui/separator";
 import {Textarea} from "@/Components/ui/textarea";
 import {cn} from "@/lib/utils";
+import {Input} from "@/Components/ui/input";
 
 dayjs.extend(relativeTime)
 
@@ -22,10 +24,22 @@ type TodoItemProps = {
 
 export function TodoItem({todo, folderSlug}: TodoItemProps) {
     const [openDelete, setOpenDelete] = useState(false)
-    const {data, setData, patch} = useForm({
-        note: todo.note.content
-    })
+    const [isAddNextStep, setIsAddNextStep] = useState(false)
     const initialNoteContent = todo.note.content;
+
+    const {data, setData, patch, reset} = useForm({
+        note: todo.note.content,
+        subTodo: ''
+    })
+    const updateTodo = (options?: VisitOptions) => {
+        if (initialNoteContent !== data.note || isAddNextStep) {
+            patch(route('todos.update', {
+                folder: folderSlug,
+                collection: todo.collection_slug,
+                todo: todo.id
+            }), options)
+        }
+    }
     return <li className=''>
         <Sheet>
             <SheetTrigger asChild>
@@ -55,17 +69,36 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
                         </ul>
                     </div>
                     <div className='space-y-4 flex-grow flex flex-col items-start mt-4'>
-                        <Button variant='ghost' className='gap-x-2 text-indigo-500 hover:text-indigo-600'>
+                        {isAddNextStep &&
+                            <form className='w-full' onSubmit={e => {
+                                e.preventDefault()
+                                updateTodo({
+                                    onSuccess: () => {
+                                        setIsAddNextStep(false);
+                                        reset('subTodo')
+                                    }
+                                })
+                            }}>
+                                <Input name='sub_todo' value={data.subTodo}
+                                       onChange={(e) => setData('subTodo', e.target.value)} placeholder='Add a sub task'
+                                       className='w-full'/>
+                            </form>
+                        }
+                        <Button variant='ghost'
+                                className='gap-x-2 text-indigo-500 hover:text-indigo-600 w-full justify-start'
+                                onClick={() => setIsAddNextStep(true)}>
                             <PlusIcon/>
                             {todo.sub_todos.length !== 0 ? 'Next step' : 'Add step'}
                         </Button>
                         <Separator/>
-                        <Button variant='ghost' className='gap-x-2 text-indigo-500 hover:text-indigo-600'>
+                        <Button variant='ghost'
+                                className='gap-x-2 text-indigo-500 hover:text-indigo-600 w-full justify-start'>
                             <SunIcon/>
                             Add to my day
                         </Button>
                         <Separator/>
-                        <Button variant='ghost' className='gap-x-2 text-indigo-500 hover:text-indigo-600'>
+                        <Button variant='ghost'
+                                className='gap-x-2 text-indigo-500 hover:text-indigo-600 w-full justify-start'>
                             <CalendarIcon/>
                             Add to due date
                         </Button>
@@ -75,15 +108,7 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
                                   value={data.note}
                                   onChange={(e) => setData('note', e.target.value)}
                                   className='border-none flex-grow focus-visible:ring-1 focus:outline-none focus:ring-0 hover:bg-slate-100 transition-colors'
-                                  onBlur={() => {
-                                      if (data.note.trim() !== initialNoteContent) {
-                                          patch(route('todos.update', {
-                                              folder: folderSlug,
-                                              collection: todo.collection_slug,
-                                              todo: todo.id
-                                          }))
-                                      }
-                                  }}
+                                  onBlur={() => updateTodo()}
                         />
 
 
