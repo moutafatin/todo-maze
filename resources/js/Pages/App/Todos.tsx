@@ -2,8 +2,9 @@ import {Collection, Todo} from "@/types";
 import {SidebarLayout} from "@/Layouts/SidebarLayout";
 import {ScrollArea} from "@/Components/ui/scroll-area";
 import {CreateTodo} from "@/features/todos/CreateTodo";
-import {useEffect, useRef, useState} from "react";
+import {useRef} from "react";
 import {TodoItem} from "@/features/todos/TodoItem";
+import {useScrollToBottom} from "@/lib/hooks";
 
 
 type TodosProps = {
@@ -12,14 +13,7 @@ type TodosProps = {
 }
 export default function TodosPage({collection, todos}: TodosProps) {
     const ref = useRef<HTMLDivElement>(null)
-    const [scrollToBottom, setScrollToBottom] = useState(false)
-    useEffect(() => {
-        if (scrollToBottom && ref.current) {
-            const element = ref.current
-            element.scroll({top: element.scrollHeight, behavior: 'smooth'})
-            setScrollToBottom(false)
-        }
-    }, [scrollToBottom]);
+    const scrollToBottom = useScrollToBottom(ref)
     return <SidebarLayout>
         <div className='flex flex-col h-screen'>
             <div className='bg-primary flex-shrink-0 h-40 flex items-end'>
@@ -34,7 +28,7 @@ export default function TodosPage({collection, todos}: TodosProps) {
             </ScrollArea>
             <div className='p-4 mt-auto'>
                 <CreateTodo collectionSlug={collection.slug}
-                            onCreate={() => setScrollToBottom(true)}/>
+                            onCreate={scrollToBottom}/>
             </div>
         </div>
     </SidebarLayout>

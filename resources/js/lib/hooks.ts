@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {RefObject, useEffect, useState} from "react";
 
 export function useIsDesktop(minWidth: number = 768) {
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > minWidth)
@@ -12,4 +12,18 @@ export function useIsDesktop(minWidth: number = 768) {
     });
 
     return isDesktop
+}
+
+
+export function useScrollToBottom(ref: RefObject<HTMLElement>) {
+    const [scrollToBottom, setScrollToBottom] = useState(false)
+    useEffect(() => {
+        if (scrollToBottom && ref.current) {
+            const element = ref.current
+            element.scroll({top: element.scrollHeight, behavior: 'smooth'})
+            setScrollToBottom(false)
+        }
+    }, [scrollToBottom]);
+
+    return () => setScrollToBottom(true)
 }
