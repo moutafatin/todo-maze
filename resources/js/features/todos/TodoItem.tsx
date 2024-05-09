@@ -6,9 +6,8 @@ import {Sheet, SheetContent, SheetFooter, SheetTrigger} from "@/Components/ui/sh
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
 import {router, useForm} from "@inertiajs/react";
-import {type VisitOptions} from '@inertiajs/core'
 import {ConfirmationDialog} from "@/Components/ConfirmationDialog";
-import {useState} from "react";
+import {FormEvent, useState} from "react";
 import {Separator} from "@/Components/ui/separator";
 import {Textarea} from "@/Components/ui/textarea";
 import {cn} from "@/lib/utils";
@@ -27,19 +26,39 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
     const [isAddNextStep, setIsAddNextStep] = useState(false)
     const initialNoteContent = todo.note.content;
 
-    const {data, setData, patch, reset} = useForm({
-        note: todo.note.content,
+
+    const addSubTodo = useForm({
         subTodo: ''
     })
-    const updateTodo = (options?: VisitOptions) => {
-        if (initialNoteContent !== data.note || isAddNextStep) {
-            patch(route('todos.update', {
+    const addNote = useForm({
+        note: todo.note.content ?? ''
+    })
+
+
+    const onAddSubTodo = (e: FormEvent) => {
+        e.preventDefault()
+        addSubTodo.patch(route('todos.update', {
+            folder: folderSlug,
+            collection: todo.collection_slug,
+            todo: todo.id
+        }), {
+            onSuccess: () => {
+                setIsAddNextStep(false)
+                addSubTodo.reset()
+            }
+        })
+    }
+
+    const addOrUpdateNote = () => {
+        if (initialNoteContent !== addNote.data.note) {
+            addNote.patch(route('todos.update', {
                 folder: folderSlug,
                 collection: todo.collection_slug,
                 todo: todo.id
-            }), options)
+            }))
         }
     }
+
     return <li className=''>
         <Sheet>
             <SheetTrigger asChild>
@@ -70,17 +89,10 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
                     </div>
                     <div className='space-y-4 flex-grow flex flex-col items-start mt-4'>
                         {isAddNextStep &&
-                            <form className='w-full' onSubmit={e => {
-                                e.preventDefault()
-                                updateTodo({
-                                    onSuccess: () => {
-                                        setIsAddNextStep(false);
-                                        reset('subTodo')
-                                    }
-                                })
-                            }}>
-                                <Input name='sub_todo' value={data.subTodo}
-                                       onChange={(e) => setData('subTodo', e.target.value)} placeholder='Add a sub task'
+                            <form className='w-full' onSubmit={onAddSubTodo}>
+                                <Input name='sub_todo' value={addSubTodo.data.subTodo}
+                                       onChange={(e) => addSubTodo.setData('subTodo', e.target.value)}
+                                       placeholder='Add a sub task'
                                        className='w-full'/>
                             </form>
                         }
@@ -105,10 +117,10 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
 
                         <Separator/>
                         <Textarea placeholder='Add a note'
-                                  value={data.note}
-                                  onChange={(e) => setData('note', e.target.value)}
+                                  value={addNote.data.note}
+                                  onChange={(e) => addNote.setData('note', e.target.value)}
                                   className='border-none flex-grow focus-visible:ring-1 focus:outline-none focus:ring-0 hover:bg-slate-100 transition-colors'
-                                  onBlur={() => updateTodo()}
+                                  onBlur={addOrUpdateNote}
                         />
 
 

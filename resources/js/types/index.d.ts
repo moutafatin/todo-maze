@@ -49,7 +49,7 @@ export interface SubTodo {
 
 export interface Note {
     id: number
-    content: string
+    content?: string
     todo_id: number
 }
 

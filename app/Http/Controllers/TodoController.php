@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Collection;
 use App\Models\Folder;
 use App\Models\Todo;
@@ -21,7 +22,7 @@ class TodoController extends Controller
     public function store(Request $request, Folder $folder, Collection $collection)
     {
         $validatedData = $request->validate(['task' => 'required']);
-        $collection->todos()->create($validatedData);
+        $collection->todos()->create($validatedData)->note()->create();
 
 
         return back();
@@ -34,13 +35,18 @@ class TodoController extends Controller
         return back();
     }
 
-
-    public function update(Request $request, Folder $folder, Collection $collection, Todo $todo)
+    public function update(UpdateTodoRequest $request, Folder $folder, Collection $collection, Todo $todo)
     {
-        $validatedData = $request->validate(['note' => 'nullable', 'subTodo' => 'nullable']);
+        $validatedData = $request->validated();
 
-        $todo->note->content = $validatedData['note'];
-        $todo->subTodos()->create(['content' => $validatedData['subTodo']]);
+        if ($request->has('note')) {
+            $todo->note->content = $validatedData['note'];
+        }
+
+        if ($request->has('subTodo')) {
+            $todo->subTodos()->create(['content' => $validatedData['subTodo']]);
+        }
+
         $todo->save();
 
         return back();
