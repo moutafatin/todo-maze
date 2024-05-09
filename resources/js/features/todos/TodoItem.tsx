@@ -39,10 +39,9 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
             </SheetTrigger>
             <SheetContent className='flex flex-col'>
                 <div className='py-5 flex flex-col flex-grow'>
-                    <div className='flex gap-x-2'>
-                        <Checkbox checked={todo.status === 'completed'} className='rounded-full size-6 mt-1'/>
-                        {todo.task}
-
+                    <div className='flex items-center gap-x-4'>
+                        <Checkbox checked={todo.status === 'completed'} className='rounded-full size-6'/>
+                        <span>{todo.task}</span>
                     </div>
                     <div className='space-y-4 flex-grow flex flex-col items-start mt-4'>
                         <Button variant='ghost' className='gap-x-2 text-indigo-500 hover:text-indigo-600'>
