@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Todo extends Model
@@ -23,5 +24,11 @@ class Todo extends Model
     public function note(): HasOne
     {
         return $this->hasOne(Note::class);
+    }
+
+
+    public function subTodos(): HasMany
+    {
+        return $this->hasMany(SubTodo::class);
     }
 }

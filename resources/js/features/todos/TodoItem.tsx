@@ -10,6 +10,7 @@ import {ConfirmationDialog} from "@/Components/ConfirmationDialog";
 import {useState} from "react";
 import {Separator} from "@/Components/ui/separator";
 import {Textarea} from "@/Components/ui/textarea";
+import {cn} from "@/lib/utils";
 
 dayjs.extend(relativeTime)
 
@@ -29,7 +30,7 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
         <Sheet>
             <SheetTrigger asChild>
                 <div
-                    className='flex items-center gap-x-2 p-2 border rounded-md hover:bg-primary/5 transition-colors cursor-pointer'>
+                    className={cn('flex items-center gap-x-2 p-2 border rounded-md hover:bg-primary/5 transition-colors cursor-pointer', todo.status === 'completed' && 'opacity-50 line-through')}>
                     <Checkbox checked={todo.status === 'completed'} className='rounded-full size-6'/>
                     {todo.task}
                     <Button variant='ghost' className='ml-auto'>
@@ -39,14 +40,24 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
             </SheetTrigger>
             <SheetContent className='flex flex-col'>
                 <div className='py-5 flex flex-col flex-grow'>
-                    <div className='flex items-center gap-x-4'>
-                        <Checkbox checked={todo.status === 'completed'} className='rounded-full size-6'/>
-                        <span>{todo.task}</span>
+                    <div className='flex flex-col gap-y-4'>
+                        <div className='flex items-center gap-x-4'>
+                            <Checkbox checked={todo.status === 'completed'} className='rounded-full size-6'/>
+                            <span>{todo.task}</span>
+                        </div>
+                        <ul className='ml-4 space-y-2'>
+                            {todo.sub_todos.map(subTodo => <li
+                                className={cn('flex items-start gap-x-2', subTodo.completed && 'opacity-50 line-through')}
+                                key={subTodo.id}>
+                                <Checkbox checked={subTodo.completed} className='rounded-full size-4 mt-1'/>
+                                <span>{subTodo.content}</span>
+                            </li>)}
+                        </ul>
                     </div>
                     <div className='space-y-4 flex-grow flex flex-col items-start mt-4'>
                         <Button variant='ghost' className='gap-x-2 text-indigo-500 hover:text-indigo-600'>
                             <PlusIcon/>
-                            Add sub todo
+                            {todo.sub_todos.length !== 0 ? 'Next step' : 'Add step'}
                         </Button>
                         <Separator/>
                         <Button variant='ghost' className='gap-x-2 text-indigo-500 hover:text-indigo-600'>

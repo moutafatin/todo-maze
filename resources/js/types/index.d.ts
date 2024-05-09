@@ -35,9 +35,17 @@ export interface Todo {
     id: number,
     task: string,
     status: 'not_started' | 'in_progress' | 'completed',
-    note: Note
+    note: Note,
+    sub_todos: SubTodo[]
 }
 
+
+export interface SubTodo {
+    id: number,
+    content: string,
+    todo_id: number
+    completed: boolean
+}
 
 export interface Note {
     id: number

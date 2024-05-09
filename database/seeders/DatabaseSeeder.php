@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Collection;
 use App\Models\Folder;
 use App\Models\Note;
+use App\Models\SubTodo;
 use App\Models\Todo;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
             Collection::factory(3)->for($folder)->create()->each(function (Collection $collection) {
                 Todo::factory(20)->for($collection)->create()->each(function (Todo $todo) {
                     Note::factory()->for($todo)->create();
+                    SubTodo::factory(3)->for($todo)->create();
                 });
             });
         });

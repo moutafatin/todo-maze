@@ -14,7 +14,7 @@ class TodoController extends Controller
     public function index(Folder $folder, Collection $collection)
     {
 //        dd($folder->collections);
-        return Inertia::render('App/Todos', ['collection' => $collection, 'todos' => $collection->todos->load('note')]);
+        return Inertia::render('App/Todos', ['collection' => $collection, 'todos' => $collection->todos->load(['note', 'subTodos'])]);
     }
 
 
