@@ -40,13 +40,14 @@ class TodoController extends Controller
 
         if ($request->has('note')) {
             $todo->note->content = $validatedData['note'];
+            $todo->note->save();
+            return back();
         }
 
         if ($request->has('subTodo')) {
             $todo->subTodos()->create(['content' => $validatedData['subTodo']]);
         }
 
-        $todo->save();
 
         return back();
     }
