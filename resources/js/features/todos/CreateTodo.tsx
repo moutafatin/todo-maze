@@ -8,18 +8,17 @@ import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/Compon
 
 type CreateTodoProps = {
     collectionSlug: string,
-    folderSlug: string,
     onCreate: () => void;
 }
 
-export function CreateTodo({collectionSlug, folderSlug, onCreate}: CreateTodoProps) {
+export function CreateTodo({collectionSlug, onCreate}: CreateTodoProps) {
     const {data, setData, post, errors, reset} = useForm({
         task: ''
     })
 
     const createTodo = (e: FormEvent) => {
         e.preventDefault()
-        post(route('todos.store', {collection: collectionSlug, folder: folderSlug}), {
+        post(route('todos.store', {collection: collectionSlug}), {
             onSuccess: () => {
                 reset()
                 onCreate()

@@ -11,27 +11,30 @@ Route::inertia('/', 'Home')->name('home');
 Route::inertia('/app', 'App/Dashboard')->middleware(['auth', 'verified'])->name('dashboard');
 
 // Add auth guard
-Route::prefix('/app/folders')->middleware('auth')->group(function () {
-    Route::controller(FolderController::class)->name('folders.')->group(function () {
-        Route::post('store', 'store')->name('store');
-        Route::patch('{folder}', 'update')->name('update');
-        Route::delete('{folder}', 'destroy')->name('destroy');
+Route::prefix('/app')->middleware('auth')->group(function () {
+
+
+    Route::prefix('folders')->group(function () {
+        Route::controller(FolderController::class)->name('folders.')->group(function () {
+            Route::post('store', 'store')->name('store');
+            Route::patch('{folder}', 'update')->name('update')->can('manage-folders,folder');
+            Route::delete('{folder}', 'destroy')->name('destroy')->can('manage-folders,folder');
+        });
+
+        Route::prefix('{folder}/collections')->controller(CollectionController::class)->name('collections.')->group(function () {
+            Route::post('store', 'store')->name('store');
+            Route::patch('{collection}', 'update')->name('update')->can('manage-collections,collection');
+            Route::delete('{collection}', 'destroy')->name('destroy')->can('manage-collections,collection');
+
+        })->scopeBindings();
     });
 
-    Route::prefix('{folder}/collections')->controller(CollectionController::class)->name('collections.')->group(function () {
-        Route::post('store', 'store')->name('store');
-        Route::patch('{collection}', 'update')->name('update');
-        Route::delete('{collection}', 'destroy')->name('destroy');
-
-    });
-
-
-    Route::prefix('{folder}/collections/{collection}/todos')->scopeBindings()->controller(TodoController::class)->name('todos.')->group(function () {
+    Route::prefix('/collections/{collection}/todos')->controller(TodoController::class)->name('todos.')->group(function () {
         Route::get('', [TodoController::class, 'index'])->name('index');
         Route::post('', [TodoController::class, 'store'])->name('store');
-        Route::delete('{todo}', [TodoController::class, 'destroy'])->name('destroy');
-        Route::patch('{todo}', [TodoController::class, 'update'])->name('update');
-    });
+        Route::delete('{todo}', [TodoController::class, 'destroy'])->name('destroy')->can('manage-todos,todo');
+        Route::patch('{todo}', [TodoController::class, 'update'])->name('update')->can('manage-todos,todo');
+    })->scopeBindings();
 
 });
 

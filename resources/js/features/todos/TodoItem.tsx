@@ -18,10 +18,9 @@ dayjs.extend(relativeTime)
 
 type TodoItemProps = {
     todo: Todo
-    folderSlug: string
 }
 
-export function TodoItem({todo, folderSlug}: TodoItemProps) {
+export function TodoItem({todo}: TodoItemProps) {
     const [openDelete, setOpenDelete] = useState(false)
     const [isAddNextStep, setIsAddNextStep] = useState(false)
     const initialNoteContent = todo.note.content;
@@ -38,7 +37,6 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
     const onAddSubTodo = (e: FormEvent) => {
         e.preventDefault()
         addSubTodo.patch(route('todos.update', {
-            folder: folderSlug,
             collection: todo.collection_slug,
             todo: todo.id
         }), {
@@ -52,7 +50,6 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
     const addOrUpdateNote = () => {
         if (initialNoteContent !== addNote.data.note) {
             addNote.patch(route('todos.update', {
-                folder: folderSlug,
                 collection: todo.collection_slug,
                 todo: todo.id
             }))
@@ -137,7 +134,6 @@ export function TodoItem({todo, folderSlug}: TodoItemProps) {
                                         action={() => {
                                             router.delete(route('todos.destroy',
                                                 {
-                                                    folder: folderSlug,
                                                     collection: todo.collection_slug,
                                                     todo: todo.id
                                                 }))

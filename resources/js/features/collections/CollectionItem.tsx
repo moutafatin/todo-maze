@@ -14,7 +14,7 @@ type CollectionItemProps = {
 export function CollectionItem({collection}: CollectionItemProps) {
     return <li
         className='flex items-center gap-x-2'>
-        <Link href={route('todos.index', {folder: collection.folder_slug, collection: collection.slug})}
+        <Link href={route('todos.index', {collection: collection.slug})}
               className='w-full' preserveState>
             <Button variant='ghost'
                     className={cn('gap-x-2 w-full justify-start focus-visible:ring-1', route().current('todos.index', {

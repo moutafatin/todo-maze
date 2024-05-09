@@ -13,7 +13,8 @@ class CollectionController extends Controller
     {
         $validatedData = $request->validate(['name' => 'required']);
         $collection = $folder->collections()->create($validatedData);
-        return redirect()->route('todos.index', [$folder, $collection]);
+        return redirect()->route('todos.index', ['collection' => $collection
+        ]);
     }
 
 
@@ -24,7 +25,7 @@ class CollectionController extends Controller
         $collection->name = $request['name'];
         $collection->save();
 
-        return redirect()->route('todos.index', [$folder, $collection]);
+        return redirect()->route('todos.index', ['collection' => $collection]);
     }
 
 

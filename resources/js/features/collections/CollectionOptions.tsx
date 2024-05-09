@@ -27,14 +27,15 @@ export function CollectionOptions({collection}: CollectionOptionsProps) {
             onSuccess: () => {
                 reset('name')
                 setIsEditOpen(false)
-            }
+            },
+            preserveState: true
         })
     }
 
     const onDeleteCollection = () => router.delete(route('collections.destroy', {
         folder: collection.folder_slug,
         collection: collection.slug
-    }))
+    }), {preserveState: true})
 
     return <>
         <DropdownMenu>
