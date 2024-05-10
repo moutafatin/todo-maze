@@ -1,5 +1,3 @@
-import {Button} from "@/Components/ui/button";
-import {StarIcon} from "lucide-react";
 import {Todo} from "@/types";
 import {Sheet, SheetContent, SheetTrigger} from "@/Components/ui/sheet";
 import dayjs from "dayjs";
@@ -8,6 +6,7 @@ import {cn} from "@/lib/utils";
 import {TodoDetail} from "@/features/todos/TodoDetail";
 import {useForm} from "@inertiajs/react";
 import {ToggleTodoStatus} from "@/features/todos/ToggleTodoStatus";
+import {ToggleTodoImportant} from "@/features/todos/ToggleTodoImportant";
 
 dayjs.extend(relativeTime)
 
@@ -23,15 +22,12 @@ export function TodoItem({todo}: TodoItemProps) {
     return <li className=''>
         <Sheet>
             <div
-                className={cn('flex items-center gap-x-2 px-2 border rounded-md hover:bg-primary/5 transition-colors cursor-pointer', todo.completed && 'opacity-50 line-through')}>
+                className={cn('flex items-center gap-x-2 px-2 border rounded-md transition-colors', todo.completed && 'opacity-50 line-through')}>
                 <ToggleTodoStatus todo={todo}/>
                 <SheetTrigger className='w-full flex justify-start py-3'>
                     {todo.task}
                 </SheetTrigger>
-                <Button variant='ghost' className='ml-auto'>
-                    <StarIcon/>
-                </Button>
-
+                <ToggleTodoImportant todo={todo}/>
 
             </div>
             <SheetContent className=''>

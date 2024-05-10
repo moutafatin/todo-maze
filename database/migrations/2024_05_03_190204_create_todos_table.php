@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->text('task');
             $table->boolean('completed')->default(false);
+            $table->boolean('important')->default(false);
             $table->string('collection_slug');
             $table->foreign('collection_slug')->references('slug')->on('collections')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();

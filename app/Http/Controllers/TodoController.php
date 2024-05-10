@@ -49,6 +49,8 @@ class TodoController extends Controller
             $todo->completed = !$todo->completed;
         } else if ($request->has('content')) {
             $todo->task = $validatedData['content'];
+        } else if ($request->has('important')) {
+            $todo->important = !$todo->important;
         }
 
 

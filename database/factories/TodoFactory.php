@@ -20,6 +20,7 @@ class TodoFactory extends Factory
         return [
             'task' => fake()->sentence(),
             'completed' => fake()->boolean(),
+            'important' => fake()->boolean(),
             'collection_slug' => Collection::factory()
         ];
     }

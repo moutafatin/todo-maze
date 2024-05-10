@@ -27,6 +27,7 @@ export interface Todo {
     task: string
     collection_slug: string,
     completed: boolean
+    important: boolean
     created_at: string,
     updated_at: string
     note: Note

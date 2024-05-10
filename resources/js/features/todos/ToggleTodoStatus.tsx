@@ -23,5 +23,5 @@ export function ToggleTodoStatus({
                              onSuccess: () => toggleStatus.setData('completed', checked === true)
                          })
                      }}
-                     className='rounded-full size-6'/>
+                     className='rounded-full size-6 hover:bg-primary/10  transition-colors'/>
 }
