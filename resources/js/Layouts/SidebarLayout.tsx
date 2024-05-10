@@ -1,7 +1,7 @@
 import {Sheet, SheetContent, SheetTrigger} from "@/Components/ui/sheet";
 import {PropsWithChildren} from "react";
 import {cn} from "@/lib/utils";
-import {ChevronDown, LogOutIcon, MenuIcon} from 'lucide-react'
+import {CalendarDaysIcon, ChevronDown, LogOutIcon, MenuIcon, StarIcon, SunIcon} from 'lucide-react'
 import {Link, usePage} from "@inertiajs/react";
 import {PageProps} from "@/types";
 import {Avatar, AvatarImage} from "@/Components/ui/avatar";
@@ -12,6 +12,7 @@ import {useIsDesktop} from "@/lib/hooks";
 import {FocusScope} from '@radix-ui/react-focus-scope'
 import {Separator} from "@/Components/ui/separator";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/Components/ui/dropdown-menu";
+import {Button} from "@/Components/ui/button";
 
 export function SidebarLayout({children}: PropsWithChildren) {
     const isDesktop = useIsDesktop()
@@ -33,44 +34,57 @@ export function SidebarLayout({children}: PropsWithChildren) {
                                           return
                                       }
                                   }}>
-                        <div>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <div
-                                        className='flex items-center gap-x-2 px-4 py-4 transition-colors hover:bg-gray-200/50 cursor-pointer'>
-                                        <Avatar className='size-12'>
-                                            <AvatarImage src={auth.user.avatar_url}/>
-                                        </Avatar>
-                                        <div className='flex flex-col'>
-                                            <span className='font-medium text-foreground'>{auth.user.name}</span>
-                                            <span
-                                                className='text-sm font-medium text-foreground'>{auth.user.email}</span>
-                                        </div>
-
-                                        <ChevronDown className='ml-auto hidden md:block text-slate-600'/>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <div
+                                    className='flex items-center gap-x-2 px-4 py-4 transition-colors hover:bg-gray-200/50 cursor-pointer'>
+                                    <Avatar className='size-12'>
+                                        <AvatarImage src={auth.user.avatar_url}/>
+                                    </Avatar>
+                                    <div className='flex flex-col'>
+                                        <span className='font-medium text-foreground'>{auth.user.name}</span>
+                                        <span
+                                            className='text-sm font-medium text-foreground'>{auth.user.email}</span>
                                     </div>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                    <DropdownMenuItem asChild><Link href={route('logout')} method='post' as="button"
-                                                                    className='w-full gap-x-2'
-                                                                    replace>
-                                        <LogOutIcon className='size-4'/>
-                                        Logout
-                                    </Link></DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
 
-                            <Separator className='mb-5'/>
-                            <ScrollArea className='h-[600px]'>
-                                <div className='p-4'>
-                                    <ul className='space-y-2'>
-                                        {folders.map(folder => <li key={folder.id}>
-                                            <FolderItem folder={folder}/>
-                                        </li>)}
-                                    </ul>
+                                    <ChevronDown className='ml-auto hidden md:block text-slate-600'/>
                                 </div>
-                            </ScrollArea>
-                        </div>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem asChild><Link href={route('logout')} method='post' as="button"
+                                                                className='w-full gap-x-2'
+                                                                replace>
+                                    <LogOutIcon className='size-4'/>
+                                    Logout
+                                </Link></DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        <Separator className=''/>
+                        <nav className='flex flex-col space-y-2 items-start px-4'>
+                            <Button variant='ghost' className='w-full justify-start gap-x-2'>
+                                <SunIcon/>
+                                Today
+                            </Button>
+                            <Button variant='ghost' className='w-full justify-start gap-x-2'>
+                                <StarIcon/>
+                                Important
+                            </Button>
+                            <Button variant='ghost' className='w-full justify-start gap-x-2'>
+                                <CalendarDaysIcon/>
+                                Planned
+                            </Button>
+                        </nav>
+                        <Separator/>
+                        <ScrollArea className='h-[600px]'>
+                            <div className='p-4'>
+                                <ul className='space-y-2'>
+                                    {folders.map(folder => <li key={folder.id}>
+                                        <FolderItem folder={folder}/>
+                                    </li>)}
+                                </ul>
+                            </div>
+                        </ScrollArea>
                         <div className='mt-auto p-4'>
                             <CreateFolder/>
                         </div>
