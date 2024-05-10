@@ -47,9 +47,12 @@ class TodoController extends Controller
 
         if ($request->has('completed')) {
             $todo->completed = !$todo->completed;
-            $todo->save();
+        } else if ($request->has('content')) {
+            $todo->task = $validatedData['content'];
         }
 
+
+        $todo->save();
 
         return back();
     }

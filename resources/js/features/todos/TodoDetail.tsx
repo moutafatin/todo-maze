@@ -10,6 +10,7 @@ import {NoteTextArea} from "@/features/todos/NoteTextArea";
 import {CreateSubTodo} from "@/features/todos/subTodos/CreateSubTodo";
 import {cn} from "@/lib/utils";
 import {ToggleTodoStatus} from "@/features/todos/ToggleTodoStatus";
+import {router} from "@inertiajs/react";
 
 
 type TodoDetailProps = {
@@ -27,7 +28,13 @@ export function TodoDetail({todo}: TodoDetailProps) {
             <div className='flex flex-col gap-y-4'>
                 <div className={cn('flex items-center gap-x-4', todo.completed && 'opacity-50 line-through')}>
                     <ToggleTodoStatus todo={todo}/>
-                    <span>{todo.task}</span>
+                    <span onBlur={(e) => {
+                        if (todo.task !== e.target.textContent?.trim()) {
+                            router.patch(route('todos.update', {collection: todo.collection_slug, todo: todo.id}), {
+                                content: e.target.textContent
+                            })
+                        }
+                    }} contentEditable suppressContentEditableWarning>{todo.task}</span>
                 </div>
                 <ul className='ml-4 space-y-2'>
                     {todo.sub_todos.map(item => <SubTodoItem item={item} key={item.id}/>)}
