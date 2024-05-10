@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
             $table->text('task');
-            $table->enum('status', ['not_started', 'in_progress', 'completed'])->default('not_started');
+            $table->boolean('completed')->default(false);
             $table->string('collection_slug');
             $table->foreign('collection_slug')->references('slug')->on('collections')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();

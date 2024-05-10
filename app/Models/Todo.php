@@ -14,6 +14,9 @@ class Todo extends Model
 
 
     protected $fillable = ['task', 'status'];
+    protected $casts = [
+        'completed' => 'boolean'
+    ];
 
     public function collection(): BelongsTo
     {

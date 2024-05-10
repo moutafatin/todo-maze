@@ -1,5 +1,4 @@
 import {Todo} from "@/types";
-import {Checkbox} from "@/Components/ui/checkbox";
 import {Button} from "@/Components/ui/button";
 import {CalendarIcon, PlusIcon, SunIcon} from "lucide-react";
 import {Separator} from "@/Components/ui/separator";
@@ -9,6 +8,8 @@ import {SubTodoItem} from "@/features/todos/subTodos/SubTodoItem";
 import {useState} from "react";
 import {NoteTextArea} from "@/features/todos/NoteTextArea";
 import {CreateSubTodo} from "@/features/todos/subTodos/CreateSubTodo";
+import {cn} from "@/lib/utils";
+import {ToggleTodoStatus} from "@/features/todos/ToggleTodoStatus";
 
 
 type TodoDetailProps = {
@@ -24,8 +25,8 @@ export function TodoDetail({todo}: TodoDetailProps) {
     return <div className='flex flex-col h-full'>
         <div className='py-5 flex flex-col flex-grow'>
             <div className='flex flex-col gap-y-4'>
-                <div className='flex items-center gap-x-4'>
-                    <Checkbox checked={todo.status === 'completed'} className='rounded-full size-6'/>
+                <div className={cn('flex items-center gap-x-4', todo.completed && 'opacity-50 line-through')}>
+                    <ToggleTodoStatus todo={todo}/>
                     <span>{todo.task}</span>
                 </div>
                 <ul className='ml-4 space-y-2'>

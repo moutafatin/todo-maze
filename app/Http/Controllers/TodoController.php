@@ -45,6 +45,12 @@ class TodoController extends Controller
         }
 
 
+        if ($request->has('completed')) {
+            $todo->completed = !$todo->completed;
+            $todo->save();
+        }
+
+
         return back();
     }
 }

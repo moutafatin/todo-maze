@@ -23,6 +23,7 @@ class UpdateTodoRequest extends FormRequest
     {
         return [
             'note' => 'sometimes|string',
+            'completed' => 'sometimes|boolean'
         ];
     }
 }
